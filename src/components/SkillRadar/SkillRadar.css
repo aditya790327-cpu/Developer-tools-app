@@ -1,0 +1,153 @@
+.sr-container {
+  padding: 24px;
+  width: 100%;
+}
+
+.sr-main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 30px;
+  margin-top: 24px;
+}
+
+@media (max-width: 992px) {
+  .sr-main-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sr-sub-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 16px;
+}
+
+/* Top 5 List */
+.top-5-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.top-5-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+  position: relative;
+}
+
+.top-5-rank {
+  width: 24px;
+  height: 24px;
+  background: var(--bg-input);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.top-5-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 120px;
+}
+
+.top-5-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.top-5-count {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.top-5-bar-bg {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.top-5-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 1s ease-out;
+}
+
+/* Tag Cloud */
+.sr-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.sr-tab {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.sr-tab.active {
+  background: var(--primary);
+  color: #000;
+  border-color: var(--primary);
+}
+
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-content: flex-start;
+}
+
+.cloud-tag {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.cloud-tag:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.2);
+}
+
+.tag-count {
+  font-size: 0.75em;
+  opacity: 0.6;
+}
+
+.sr-radar-wrapper {
+  margin-top: 20px;
+  background: rgba(255, 255, 255, 0.01);
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.sr-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  height: 300px;
+  color: var(--text-muted);
+}

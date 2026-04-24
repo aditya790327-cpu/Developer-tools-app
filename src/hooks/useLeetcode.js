@@ -4,7 +4,8 @@ import {
   fetchUserSolved,
   fetchContestStats, 
   fetchSubmissionCalendar, 
-  fetchRecentSubmissions 
+  fetchRecentSubmissions,
+  fetchSkillStats
 } from '../services/leetcodeApi';
 
 export const useLeetcode = () => {
@@ -17,12 +18,13 @@ export const useLeetcode = () => {
     setError(null);
     try {
       // Primary fetch
-      const [profile, solved, contest, calendar, submissions] = await Promise.all([
+      const [profile, solved, contest, calendar, submissions, skills] = await Promise.all([
         fetchUserProfile(username).catch(() => ({})),
         fetchUserSolved(username).catch(() => ({})),
         fetchContestStats(username).catch(() => ({})),
         fetchSubmissionCalendar(username).catch(() => ({})),
-        fetchRecentSubmissions(username).catch(() => ({}))
+        fetchRecentSubmissions(username).catch(() => ({})),
+        fetchSkillStats(username).catch(() => ({}))
       ]);
 
       // If profile is empty, it means user was likely not found
@@ -47,7 +49,8 @@ export const useLeetcode = () => {
         profile: mergedProfile,
         contest,
         calendar,
-        submissions
+        submissions,
+        skills
       });
     } catch (err) {
       setError(err.message || 'Something went wrong');

@@ -29,3 +29,21 @@ export const fetchRecentSubmissions = async (username) => {
   if (!response.ok) throw new Error('Recent submissions not found');
   return response.json();
 };
+
+export const fetchSkillStats = async (username) => {
+  const response = await fetch(`${BASE_URL}/${username}/skillStats`);
+  if (!response.ok) throw new Error('Skill stats not found');
+  return response.json();
+};
+
+export const fetchAllUserData = async (username) => {
+  const [profile, contest, calendar, submissions, skills] = await Promise.all([
+    fetchUserProfile(username).catch(() => ({})),
+    fetchContestStats(username).catch(() => ({})),
+    fetchSubmissionCalendar(username).catch(() => ({})),
+    fetchRecentSubmissions(username).catch(() => ({})),
+    fetchSkillStats(username).catch(() => ({}))
+  ]);
+  
+  return { profile, contest, calendar, submissions, skills };
+};
