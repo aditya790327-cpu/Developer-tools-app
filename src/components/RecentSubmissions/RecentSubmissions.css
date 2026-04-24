@@ -1,0 +1,59 @@
+.submissions-container {
+  padding: 24px;
+  width: 100%;
+}
+
+.submissions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.submission-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  transition: background 0.2s ease;
+}
+
+.submission-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.sub-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sub-title {
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+.sub-time {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.sub-status {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status-accepted {
+  background: rgba(0, 184, 163, 0.1);
+  color: var(--easy);
+}
+
+.status-failed {
+  background: rgba(239, 71, 67, 0.1);
+  color: var(--hard);
+}
