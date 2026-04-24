@@ -1,17 +1,17 @@
 :root {
-  --primary: #ffa116;
-  --primary-hover: #ffb84d;
-  --bg-dark: #0a0a0a;
-  --bg-card: #1a1a1a;
-  --bg-input: #262626;
+  --primary: #00b8a3;
+  --primary-hover: #00d1b9;
+  --bg-dark: #0b0e14;
+  --bg-card: #1a1d26;
+  --bg-input: #252833;
   --text-main: #eff1f6;
-  --text-muted: #9ca3af;
-  --border: #333333;
+  --text-muted: #94a3b8;
+  --border: rgba(255, 255, 255, 0.05);
   --easy: #00b8a3;
   --medium: #ffc01e;
   --hard: #ef4743;
-  --glass: rgba(255, 255, 255, 0.03);
-  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass: rgba(255, 255, 255, 0.02);
+  --glass-border: rgba(255, 255, 255, 0.05);
 }
 
 * {

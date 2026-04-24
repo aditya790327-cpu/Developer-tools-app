@@ -1,5 +1,4 @@
 import React from 'react';
-import { CheckCircle2, Award, Zap, BarChart3 } from 'lucide-react';
 import './StatsCards.css';
 
 const StatsCards = ({ stats }) => {
@@ -7,58 +6,34 @@ const StatsCards = ({ stats }) => {
 
   const cards = [
     {
-      title: 'Total Solved',
-      value: stats.totalSolved,
-      total: stats.totalQuestions,
-      icon: <CheckCircle2 className="icon-solved" />,
-      color: 'var(--primary)'
+      label: 'Easy',
+      solved: stats.easySolved,
+      total: stats.totalEasy || 820,
+      class: 'easy-variant'
     },
     {
-      title: 'Easy',
-      value: stats.easySolved,
-      total: stats.totalEasy,
-      icon: <Zap className="icon-easy" />,
-      color: 'var(--easy)'
+      label: 'Medium',
+      solved: stats.mediumSolved,
+      total: stats.totalMedium || 1740,
+      class: 'medium-variant'
     },
     {
-      title: 'Medium',
-      value: stats.mediumSolved,
-      total: stats.totalMedium,
-      icon: <Award className="icon-medium" />,
-      color: 'var(--medium)'
-    },
-    {
-      title: 'Hard',
-      value: stats.hardSolved,
-      total: stats.totalHard,
-      icon: <BarChart3 className="icon-hard" />,
-      color: 'var(--hard)'
+      label: 'Hard',
+      solved: stats.hardSolved,
+      total: stats.totalHard || 787,
+      class: 'hard-variant'
     }
   ];
 
   return (
-    <div className="stats-grid">
+    <div className="difficulty-grid">
       {cards.map((card, index) => (
-        <div key={index} className="stats-card glass-card animate-in" style={{ animationDelay: `${index * 0.1}s` }}>
-          <div className="card-header">
-            {card.icon}
-            <span className="card-title">{card.title}</span>
+        <div key={index} className={`difficulty-card ${card.class} animate-in`} style={{ animationDelay: `${index * 0.1}s` }}>
+          <span className="diff-label">{card.label}</span>
+          <div className="diff-value-row">
+            <span className="diff-count">{card.solved}</span>
           </div>
-          <div className="card-body">
-            <div className="card-value-container">
-              <span className="card-value">{card.value}</span>
-              <span className="card-total">/ {card.total}</span>
-            </div>
-            <div className="progress-bar-bg">
-              <div 
-                className="progress-bar-fill" 
-                style={{ 
-                  width: `${(card.value / card.total) * 100}%`,
-                  backgroundColor: card.color 
-                }}
-              />
-            </div>
-          </div>
+          <span className="diff-total">out of {card.total}</span>
         </div>
       ))}
     </div>
