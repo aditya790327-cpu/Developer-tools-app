@@ -1,0 +1,140 @@
+.efficiency-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.eff-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.eff-icon {
+  color: #f59e0b;
+}
+
+.eff-title {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: 0.1em;
+}
+
+.eff-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 20px;
+}
+
+.eff-card {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.gauge-wrapper {
+  position: relative;
+  height: 100px;
+  margin-top: 10px;
+}
+
+.gauge-center {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gauge-val {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.gauge-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.eff-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 15px;
+  text-align: center;
+}
+
+.chart-wrapper {
+  position: relative;
+  margin-top: 20px;
+}
+
+.dist-marker {
+  position: absolute;
+  top: -10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translateX(-50%);
+}
+
+.marker-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--primary);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--primary);
+}
+
+.marker-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-top: 4px;
+}
+
+.eff-metrics-row {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.eff-metric {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.eff-metric span {
+  color: var(--text-muted);
+}
+
+.complexity-insight-footer {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: var(--text-main);
+}
+
+.complexity-insight-footer strong {
+  color: var(--primary);
+}
+
+@media (max-width: 900px) {
+  .eff-grid {
+    grid-template-columns: 1fr;
+  }
+}

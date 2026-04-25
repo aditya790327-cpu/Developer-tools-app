@@ -1,80 +1,122 @@
 import React from 'react';
-import { Users, Swords, TrendingUp } from 'lucide-react';
+import { Crown, Swords } from 'lucide-react';
 import './CompareStats.css';
 
 const CompareStats = ({ user1, user2 }) => {
   if (!user1 || !user2) return null;
 
-  const metrics = [
-    { label: 'Total Solved', val1: user1.profile.totalSolved, val2: user2.profile.totalSolved },
-    { label: 'Easy', val1: user1.profile.easySolved, val2: user2.profile.easySolved },
-    { label: 'Medium', val1: user1.profile.mediumSolved, val2: user2.profile.mediumSolved },
-    { label: 'Hard', val1: user1.profile.hardSolved, val2: user2.profile.hardSolved },
-    { label: 'Acceptance Rate', val1: user1.profile.acceptanceRate, val2: user2.profile.acceptanceRate, suffix: '%' },
-    { label: 'Ranking', val1: user1.profile.ranking, val2: user2.profile.ranking, inverse: true }
-  ];
+  // Robust data extractor for both users
+  const extractStats = (u) => {
+    const p = u.profile || {};
+    
+    const getAcceptedCount = (diff) => {
+      const ac = p.acSubmissionNum || [];
+      const found = ac.find(i => i.difficulty === diff);
+      return found ? found.count : 0;
+    };
 
-  const calculatePoints = (stats) => {
-    return (stats.easySolved * 1) + (stats.mediumSolved * 3) + (stats.hardSolved * 5);
+    const totalSolved = getAcceptedCount('All') || p.totalSolved || 0;
+    const easy = getAcceptedCount('Easy') || p.easySolved || 0;
+    const medium = getAcceptedCount('Medium') || p.mediumSolved || 0;
+    const hard = getAcceptedCount('Hard') || p.hardSolved || 0;
+
+    const totalSubList = p.totalSubmissionNum || [];
+    const allSubs = totalSubList.find(i => i.difficulty === 'All');
+    const totalSubs = allSubs ? allSubs.submissions : (totalSolved * 1.5 || 1);
+    const acceptedSubs = allSubs ? allSubs.count : totalSolved;
+
+    return {
+      username: p.username || 'User',
+      totalSolved,
+      easy,
+      medium,
+      hard,
+      ranking: p.ranking || 1000000,
+      acceptance: ((acceptedSubs / totalSubs) * 100).toFixed(1)
+    };
   };
 
-  const points1 = calculatePoints(user1.profile);
-  const points2 = calculatePoints(user2.profile);
+  const s1 = extractStats(user1);
+  const s2 = extractStats(user2);
+
+  const calculatePoints = (s) => {
+    return (s.easy * 10) + (s.medium * 20) + (s.hard * 30) || 0;
+  };
+
+  const xp1 = calculatePoints(s1);
+  const xp2 = calculatePoints(s2);
+  const totalXp = xp1 + xp2 || 1;
+
+  const metrics = [
+    { label: 'TOTAL SOLVED', val1: s1.totalSolved, val2: s2.totalSolved },
+    { label: 'EASY', val1: s1.easy, val2: s2.easy },
+    { label: 'MEDIUM', val1: s1.medium, val2: s2.medium },
+    { label: 'HARD', val1: s1.hard, val2: s2.hard },
+    { label: 'ACCEPTANCE', val1: parseFloat(s1.acceptance), val2: parseFloat(s2.acceptance), suffix: '%' },
+    { label: 'GLOBAL RANK', val1: s1.ranking, val2: s2.ranking, inverse: true }
+  ];
 
   return (
     <div className="compare-container animate-in">
       <div className="compare-header">
-        <div className="compare-user-box">
-          <div className="compare-avatar">{user1.profile.username[0].toUpperCase()}</div>
-          <span className="compare-name">@{user1.profile.username}</span>
+        <div className="compare-user-box left-user">
+          <div className="compare-avatar u1-avatar">{s1.username[0].toUpperCase()}</div>
+          <span className="compare-name">@{s1.username}</span>
         </div>
-        <div className="vs-badge">
-          <Swords size={20} />
-          <span>VS</span>
+        
+        <div className="vs-battle-badge">
+          <div className="vs-glow"></div>
+          <Swords size={32} className="vs-icon-pulse" />
+          <span className="vs-text">VS</span>
         </div>
-        <div className="compare-user-box">
-          <div className="compare-avatar alt">{user2.profile.username[0].toUpperCase()}</div>
-          <span className="compare-name">@{user2.profile.username}</span>
+
+        <div className="compare-user-box right-user">
+          <div className="compare-avatar u2-avatar">{s2.username[0].toUpperCase()}</div>
+          <span className="compare-name">@{s2.username}</span>
         </div>
       </div>
 
       <div className="comparison-grid">
         <div className="xp-battle-card glass-card">
-          <h4 className="battle-title">XP Battle</h4>
-          <div className="battle-bar-container">
-            <div className="battle-val">{points1.toLocaleString()} XP</div>
-            <div className="battle-track">
-              <div 
-                className="battle-fill u1" 
-                style={{ width: `${(points1 / (points1 + points2)) * 100}%` }}
-              ></div>
-              <div 
-                className="battle-fill u2" 
-                style={{ width: `${(points2 / (points1 + points2)) * 100}%` }}
-              ></div>
-            </div>
-            <div className="battle-val right">{points2.toLocaleString()} XP</div>
+          <div className="battle-header">
+            <span className={xp1 >= xp2 ? 'winner-text' : ''}>{xp1.toLocaleString()} XP</span>
+            <span className="battle-label">XP BATTLE</span>
+            <span className={xp2 >= xp1 ? 'winner-text' : ''}>{xp2.toLocaleString()} XP</span>
+          </div>
+          <div className="battle-track-outer">
+            <div 
+              className="battle-fill u1" 
+              style={{ width: `${(xp1 / totalXp) * 100}%` }}
+            ></div>
+            <div 
+              className="battle-fill u2" 
+              style={{ width: `${(xp2 / totalXp) * 100}%` }}
+            ></div>
           </div>
         </div>
 
-        {metrics.map((m, i) => {
-          const isWinner1 = m.inverse ? m.val1 < m.val2 : m.val1 > m.val2;
-          const isWinner2 = m.inverse ? m.val2 < m.val1 : m.val2 > m.val1;
-          
-          return (
-            <div key={i} className="metric-compare-row glass-card">
-              <div className={`metric-val ${isWinner1 ? 'winner' : ''}`}>
-                {m.val1?.toLocaleString()}{m.suffix}
-                {isWinner1 && <TrendingUp size={14} className="win-icon" />}
+        <div className="comparison-table glass-card">
+          {metrics.map((m, i) => {
+            const isWinner1 = m.inverse ? m.val1 < m.val2 : m.val1 > m.val2;
+            const isWinner2 = m.inverse ? m.val2 < m.val1 : m.val2 > m.val1;
+            
+            return (
+              <div key={i} className="comparison-row-grid">
+                <div className={`comp-val-side left-side ${isWinner1 ? 'winner-highlight' : ''}`}>
+                  {isWinner1 && <Crown size={16} className="crown-icon-left" />}
+                  {m.val1.toLocaleString()}{m.suffix}
+                </div>
+                
+                <div className="comp-label-center">{m.label}</div>
+                
+                <div className={`comp-val-side right-side ${isWinner2 ? 'winner-highlight' : ''}`}>
+                  {m.val2.toLocaleString()}{m.suffix}
+                  {isWinner2 && <Crown size={16} className="crown-icon-right" />}
+                </div>
               </div>
-              <div className="metric-label-mid">{m.label}</div>
-              <div className={`metric-val right ${isWinner2 ? 'winner' : ''}`}>
-                {isWinner2 && <TrendingUp size={14} className="win-icon" />}
-                {m.val2?.toLocaleString()}{m.suffix}
-              </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </div>
   );

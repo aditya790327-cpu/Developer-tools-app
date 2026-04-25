@@ -37,13 +37,24 @@ export const fetchSkillStats = async (username) => {
 };
 
 export const fetchAllUserData = async (username) => {
-  const [profile, contest, calendar, submissions, skills] = await Promise.all([
+  const [profile, solved, contest, calendar, submissions, skills] = await Promise.all([
     fetchUserProfile(username).catch(() => ({})),
+    fetchUserSolved(username).catch(() => ({})),
     fetchContestStats(username).catch(() => ({})),
     fetchSubmissionCalendar(username).catch(() => ({})),
     fetchRecentSubmissions(username).catch(() => ({})),
     fetchSkillStats(username).catch(() => ({}))
   ]);
   
-  return { profile, contest, calendar, submissions, skills };
+  const mergedProfile = {
+    ...profile,
+    totalSolved: solved.solvedProblem || profile.totalSolved || 0,
+    easySolved: solved.easySolved || profile.easySolved || 0,
+    mediumSolved: solved.mediumSolved || profile.mediumSolved || 0,
+    hardSolved: solved.hardSolved || profile.hardSolved || 0,
+    acSubmissionNum: solved.acSubmissionNum || profile.acSubmissionNum || [],
+    totalSubmissionNum: solved.totalSubmissionNum || profile.totalSubmissionNum || []
+  };
+
+  return { profile: mergedProfile, contest, calendar, submissions, skills };
 };

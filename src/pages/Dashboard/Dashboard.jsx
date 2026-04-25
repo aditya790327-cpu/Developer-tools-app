@@ -9,8 +9,13 @@ import MilestoneProgress from '../../components/MilestoneProgress/MilestoneProgr
 import CodingIQ from '../../components/CodingIQ/CodingIQ';
 import AiCoach from '../../components/AiCoach/AiCoach';
 import CompareStats from '../../components/CompareStats/CompareStats';
+import EfficiencyMetrics from '../../components/EfficiencyMetrics/EfficiencyMetrics';
+import Achievements from '../../components/Achievements/Achievements';
+import FocusTimer from '../../components/FocusTimer/FocusTimer';
+import ProblemSwipe from '../../components/ProblemSwipe/ProblemSwipe';
+import DsaRoadmap from '../../components/DsaRoadmap/DsaRoadmap';
 import { fetchAllUserData } from '../../services/leetcodeApi';
-import { ArrowLeft, User, LayoutGrid, BarChart2, ListTodo, Home as HomeIcon, Search, Swords, X } from 'lucide-react';
+import { ArrowLeft, User, LayoutGrid, BarChart2, ListTodo, Home as HomeIcon, Search, Swords, X, Map } from 'lucide-react';
 import './Dashboard.css';
 
 const Dashboard = ({ data, onBack }) => {
@@ -19,6 +24,7 @@ const Dashboard = ({ data, onBack }) => {
   const [comparisonData, setComparisonData] = useState(null);
   const [isComparing, setIsComparing] = useState(false);
   const [isLoadingCompare, setIsLoadingCompare] = useState(false);
+  const [isFocusActive, setIsFocusActive] = useState(false);
 
   if (!data) return null;
 
@@ -91,6 +97,10 @@ const Dashboard = ({ data, onBack }) => {
       case 'stats':
         return (
           <div className="tab-content animate-in">
+            <div className="utility-row" style={{ marginBottom: '32px' }}>
+              <FocusTimer onToggleFocus={(active) => setIsFocusActive(active)} />
+            </div>
+
             <div className="stats-top-row">
               <section className="overview-section">
                 <h4 className="section-subtitle">OVERVIEW</h4>
@@ -129,6 +139,7 @@ const Dashboard = ({ data, onBack }) => {
               <section className="iq-section-wrapper">
                 <h4 className="section-subtitle">CODING LEVEL</h4>
                 <CodingIQ stats={profile} />
+                <Achievements data={data} streaks={streaks} />
               </section>
             </div>
 
@@ -139,10 +150,20 @@ const Dashboard = ({ data, onBack }) => {
             <section className="milestone-section-wrapper" style={{ marginBottom: '40px' }}>
                <MilestoneProgress solvedCount={profile.totalSolved} />
             </section>
-            <section className="coach-section-wrapper">
+            <section className="coach-section-wrapper" style={{ marginBottom: '40px' }}>
               <h4 className="section-subtitle">RECOMMENDED ACTION</h4>
               <AiCoach skillsData={skills} />
             </section>
+
+            <section className="swipe-discovery-wrapper">
+              <ProblemSwipe />
+            </section>
+          </div>
+        );
+      case 'roadmap':
+        return (
+          <div className="tab-content animate-in">
+            <DsaRoadmap skillsData={skills} />
           </div>
         );
       case 'charts':
@@ -152,6 +173,9 @@ const Dashboard = ({ data, onBack }) => {
             <div className="charts-tab-grid">
               <ProblemDistribution stats={profile} />
               <ContestChart contestData={contest} />
+            </div>
+            <div className="skill-section-wrapper" style={{ marginTop: '30px' }}>
+              <EfficiencyMetrics stats={profile} />
             </div>
             <div className="skill-section-wrapper" style={{ marginTop: '30px' }}>
               <SkillRadar skillsData={skills} />
@@ -172,7 +196,7 @@ const Dashboard = ({ data, onBack }) => {
   };
 
   return (
-    <div className="dashboard-wrapper">
+    <div className={`dashboard-wrapper ${isFocusActive ? 'focus-mode-active' : ''}`}>
       <nav className="navbar">
         <div className="nav-container">
           <div className="nav-logo" onClick={onBack}>
@@ -183,6 +207,7 @@ const Dashboard = ({ data, onBack }) => {
           <div className="nav-links">
             <button className={`nav-link ${activeTab === 'home' ? 'active' : ''}`} onClick={onBack}>Home</button>
             <button className={`nav-link ${activeTab === 'stats' ? 'active' : ''}`} onClick={() => setActiveTab('stats')}>Stats</button>
+            <button className={`nav-link ${activeTab === 'roadmap' ? 'active' : ''}`} onClick={() => setActiveTab('roadmap')}>Roadmap</button>
             <button className={`nav-link ${activeTab === 'charts' ? 'active' : ''}`} onClick={() => setActiveTab('charts')}>Charts</button>
             <button className={`nav-link ${activeTab === 'submissions' ? 'active' : ''}`} onClick={() => setActiveTab('submissions')}>Submissions</button>
             {isComparing && <button className={`nav-link ${activeTab === 'compare' ? 'active' : ''}`} onClick={() => setActiveTab('compare')}>Compare</button>}
