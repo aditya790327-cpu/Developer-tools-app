@@ -14,8 +14,10 @@ import Achievements from '../../components/Achievements/Achievements';
 import FocusTimer from '../../components/FocusTimer/FocusTimer';
 import ProblemSwipe from '../../components/ProblemSwipe/ProblemSwipe';
 import DsaRoadmap from '../../components/DsaRoadmap/DsaRoadmap';
+import InterviewPrep from '../../components/InterviewPrep/InterviewPrep';
+import MultiPlatformStats from '../../components/MultiPlatformStats/MultiPlatformStats';
 import { fetchAllUserData } from '../../services/leetcodeApi';
-import { ArrowLeft, User, LayoutGrid, BarChart2, ListTodo, Home as HomeIcon, Search, Swords, X, Map } from 'lucide-react';
+import { ArrowLeft, User, LayoutGrid, BarChart2, ListTodo, Home as HomeIcon, Search, Swords, X, Map, Briefcase, Globe } from 'lucide-react';
 import './Dashboard.css';
 
 const Dashboard = ({ data, onBack }) => {
@@ -166,6 +168,18 @@ const Dashboard = ({ data, onBack }) => {
             <DsaRoadmap skillsData={skills} />
           </div>
         );
+      case 'interview':
+        return (
+          <div className="tab-content animate-in">
+            <InterviewPrep />
+          </div>
+        );
+      case 'unified':
+        return (
+          <div className="tab-content animate-in">
+            <MultiPlatformStats leetcodeId={profile.username} data={data} />
+          </div>
+        );
       case 'charts':
         return (
           <div className="tab-content animate-in">
@@ -208,6 +222,8 @@ const Dashboard = ({ data, onBack }) => {
             <button className={`nav-link ${activeTab === 'home' ? 'active' : ''}`} onClick={onBack}>Home</button>
             <button className={`nav-link ${activeTab === 'stats' ? 'active' : ''}`} onClick={() => setActiveTab('stats')}>Stats</button>
             <button className={`nav-link ${activeTab === 'roadmap' ? 'active' : ''}`} onClick={() => setActiveTab('roadmap')}>Roadmap</button>
+            <button className={`nav-link ${activeTab === 'interview' ? 'active' : ''}`} onClick={() => setActiveTab('interview')}>Interview</button>
+            <button className={`nav-link ${activeTab === 'unified' ? 'active' : ''}`} onClick={() => setActiveTab('unified')}>Unified</button>
             <button className={`nav-link ${activeTab === 'charts' ? 'active' : ''}`} onClick={() => setActiveTab('charts')}>Charts</button>
             <button className={`nav-link ${activeTab === 'submissions' ? 'active' : ''}`} onClick={() => setActiveTab('submissions')}>Submissions</button>
             {isComparing && <button className={`nav-link ${activeTab === 'compare' ? 'active' : ''}`} onClick={() => setActiveTab('compare')}>Compare</button>}
